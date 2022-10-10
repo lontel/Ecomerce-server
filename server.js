@@ -6,6 +6,8 @@ const mongoose = require('mongoose')
 const xss = require('xss-clean')
 const mongoSanitize = require('express-mongo-sanitize')
 const routes = require('./routes')
+const passport = require('passport')
+const { jwtStrategy } = require('./middleware/passport')
 
 const { handleError, convertToApiError } = require('./middleware/apiError')
 
@@ -31,6 +33,10 @@ app.use(express.json())
 // sanitize
 app.use(xss())
 app.use(mongoSanitize())
+
+//passport
+app.use(passport.initialize())
+passport.use('jwt', jwtStrategy)
 
 
 // routes
