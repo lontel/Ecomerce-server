@@ -34,4 +34,21 @@ const deleteBrandById = async (id) => {
     }
 }
 
-module.exports = { addBrand, getBrandById, deleteBrandById }
+const getAllBrands = async (args) => {
+    try {
+        let order = args.order ? args.order : 'asc'
+        let limit = args.limit ? args.limit : '5'
+        const brands = await Brand
+            .find({})
+            .sort(["_id", order])
+            .limit(limit)
+
+
+        if (!brands) throw new ApiError(httpStatus.NOT_FOUND, 'Brands not found!')
+        return brands
+    } catch (error) {
+        throw error
+    }
+}
+
+module.exports = { addBrand, getBrandById, deleteBrandById, getAllBrands }

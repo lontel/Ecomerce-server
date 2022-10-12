@@ -9,6 +9,6 @@ router.route('/brand/:id')
     .delete(auth('deleteAny', 'brand'), brandController.deleteBrand)
 
 router.post('/brand', auth('createAny', 'brand'), brandController.addBrand)
-
+router.get('/allBrands', brandController.getAllBrands)
 
 module.exports = router
