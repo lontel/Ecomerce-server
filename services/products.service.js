@@ -49,4 +49,21 @@ const deleteProduct = async (_id) => {
     }
 }
 
-module.exports = { addProduct, getProductById, updateProduct, deleteProduct }
+const getAllProducts = async (req) => {
+    try {
+        const products = await Product
+            .find({})
+            .populate('brand')
+            .sort([
+                [req.query.sortBy, req.query.order]
+            ])
+            .limit(parseInt(req.query.limit))
+        if (!products) throw new ApiError(httpStatus.NOT_FOUND, 'Products not found')
+        return products
+    } catch (error) {
+        throw error
+    }
+}
+
+
+module.exports = { addProduct, getProductById, updateProduct, deleteProduct, getAllProducts }

@@ -12,5 +12,6 @@ router.route('/product/:id')
     .patch(auth('updateAny', 'product'), productsController.updateProduct)
     .delete(auth('deleteAny', 'product'), productsController.deleteProduct)
 
+router.get('/allProducts', productsController.getAllProducts)
 
 module.exports = router
