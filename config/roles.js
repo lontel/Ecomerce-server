@@ -10,7 +10,8 @@ let grantsObject = {
     admin: {
         profile: allRights,
         brand: allRights,
-        product: allRights
+        product: allRights,
+        site: allRights,
     },
     user: {
         profile: {
