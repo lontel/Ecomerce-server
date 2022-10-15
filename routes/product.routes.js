@@ -13,5 +13,9 @@ router.route('/product/:id')
     .delete(auth('deleteAny', 'product'), productsController.deleteProduct)
 
 router.get('/allProducts', productsController.getAllProducts)
+router.post('/paginate/all', productsController.paginateProducts)
+
+//upload images
+
 
 module.exports = router

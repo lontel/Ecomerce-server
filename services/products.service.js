@@ -1,4 +1,5 @@
 const httpStatus = require("http-status")
+const mongoose = require("mongoose")
 const { ApiError } = require("../middleware/apiError")
 const { Product } = require("../models/product")
 
@@ -65,5 +66,60 @@ const getAllProducts = async (req) => {
     }
 }
 
+const paginateProducts = async (req) => {
+    try {
 
-module.exports = { addProduct, getProductById, updateProduct, deleteProduct, getAllProducts }
+        let aggQueryArray = [];
+
+        if (req.body.keywords && req.body.keywords != '') {
+            const re = new RegExp(`${req.body.keywords}`, 'gi')
+            aggQueryArray.push({
+                $match: { model: { $regex: re } }
+            })
+        }
+        if (req.body.brand && req.body.length > 0) {
+            let newBrandsArray = req.body.brand.map((item) => {
+                mongoose.Types.ObjectId(item)
+            })
+            aggQueryArray.push({
+                $match: { brand: { $in: newBrandsArray } }
+            })
+        }
+        if (req.body.min && req.body.min > 0 || req.body.max && req.body.max < 2000) {
+
+            if (req.body.min) {
+                aggQueryArray.push({ $match: { price: { $gt: req.body.min } } })
+            }
+            if (req.body.max) {
+                aggQueryArray.push({ $match: { price: { $lt: req.body.max } } })
+            }
+        }
+
+        aggQueryArray.push(
+            {
+                $lookup:
+                {
+                    from: 'brands',
+                    localField: 'brand',
+                    foreignField: '_id',
+                    as: 'brand'
+                }
+            },
+            { $unwind: '$brand' }
+        )
+        let aggQuery = Product.aggregate(aggQueryArray)
+        const options = {
+            page: req.body.page,
+            limit: 2,
+            sort: { date: 'desc' }
+        };
+        const products = await Product.aggregatePaginate(aggQuery, options)
+        return products
+    } catch (error) {
+        throw error
+    }
+}
+
+
+
+module.exports = { addProduct, getProductById, updateProduct, deleteProduct, getAllProducts, paginateProducts }
