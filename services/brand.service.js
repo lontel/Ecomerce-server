@@ -40,7 +40,7 @@ const getAllBrands = async (args) => {
         let limit = args.limit ? args.limit : '5'
         const brands = await Brand
             .find({})
-            .sort(["_id", order])
+            .sort([["_id", order]])
             .limit(limit)
 
 
