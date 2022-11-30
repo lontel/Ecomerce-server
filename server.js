@@ -15,9 +15,7 @@ const mongoUri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@${
 mongoose
     .connect(mongoUri, {
         useNewUrlParser: true,
-        useUnifiedTopology: true,
-        // useCreateIndex: true,
-        // useFindAndModify: false
+        useUnifiedTopology: true
     })
     .then((x) => {
         console.log(
