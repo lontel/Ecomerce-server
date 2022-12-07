@@ -12,6 +12,7 @@ let grantsObject = {
         brand: allRights,
         product: allRights,
         site: allRights,
+        // transaction: allRights
     },
     user: {
         profile: {
@@ -19,7 +20,11 @@ let grantsObject = {
             'update:own': ['*']
         },
         brand: { 'read:any': ['*'] },
-        product: { 'read:any': ['*'] }
+        product: { 'read:any': ['*'] },
+        // transaction: {
+        //     'create:any': ['*'],
+        //     'read:any': ['*']
+        // }
 
     }
 }
