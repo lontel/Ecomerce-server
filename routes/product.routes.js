@@ -6,16 +6,6 @@ const auth = require('../middleware/auth')
 const { addProductValidator } = require('../middleware/validations')
 const formidableMiddleware = require('express-formidable')
 
-// const fileUploader = require('./../config/cloudinary')
-// require('dotenv').config()
-// const cloudinary = require('cloudinary').v2
-
-// cloudinary.config({
-//     cloud_name: process.env.CLOUDINARY_NAME,
-//     api_key: process.env.CLOUDINARY_KEY,
-//     api_secret: process.env.CLOUDINARY_SECRET
-// })
-
 
 router.post('/', auth('createAny', 'product'), addProductValidator, productsController.addProduct)
 
